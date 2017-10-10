@@ -39,7 +39,7 @@ public class MainPanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        balozokLst = new javax.swing.JList<>();
+        balozokLst = new javax.swing.JList();
         jScrollPane2 = new javax.swing.JScrollPane();
         zeneLst = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -53,6 +53,15 @@ public class MainPanel extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 204, 153));
         setMaximumSize(new java.awt.Dimension(600, 650));
         setMinimumSize(new java.awt.Dimension(600, 650));
+        addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                formAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(153, 0, 0));
@@ -132,34 +141,44 @@ public class MainPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_formAncestorAdded
+        loadingData();
+    }//GEN-LAST:event_formAncestorAdded
 
-    private DefaultListModel<Balozo> balozoListModel;
-    private DefaultListModel<ZeneSzam> zeneListModel;
-    private DefaultListModel<Balozo> tancokListModel;
-    private DefaultListModel<ZeneSzam> kivalasztottZenekListModel;
+
+    private DefaultListModel<Balozo> balozoListModel=new DefaultListModel<>();
+    private DefaultListModel<ZeneSzam> zeneListModel=new DefaultListModel<>();
+    private DefaultListModel<Balozo> tancokListModel=new DefaultListModel<>();
+    private DefaultListModel<ZeneSzam> kivalasztottZenekListModel=new DefaultListModel<>();
+    
+    
     
     
     private void loadingData(){
-        
-        String sqlCommand = "…";
+        String sqlCommand = "select * from BALOZOK";
         try(Connection connection=getDatabaseConnect();
             Statement sqlRequest = connection.createStatement();
             ResultSet resultSet = sqlRequest.executeQuery(sqlCommand);
             ) {
             int id,evfolyam;
             String nev;
-            Balozo b;
+            Balozo b=null;
             while(resultSet.next()){
                 id=resultSet.getInt("id");
+                System.out.println(id);
                 evfolyam=resultSet.getInt("evfolyam");
+                System.out.println(evfolyam);
                 nev=resultSet.getString("nev");
+                System.out.println(nev);
                 if(evfolyam==1){
-                b=new Balozo(id, nev);
-                }else{
                 b=new Golya(id, nev);
+                }else{
+                b=new Balozo(id, nev);
                 }
                 balozoListModel.addElement(b);
             }
+            
+            balozokLst.setModel(balozoListModel);
             
 
         } catch (ClassNotFoundException | SQLException ex) {
@@ -174,7 +193,7 @@ public class MainPanel extends javax.swing.JPanel {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<String> balozokLst;
+    private javax.swing.JList balozokLst;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
