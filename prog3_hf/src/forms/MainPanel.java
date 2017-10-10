@@ -5,6 +5,15 @@
  */
 package forms;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.management.Query;
+
 
 public class MainPanel extends javax.swing.JPanel {
 
@@ -124,8 +133,24 @@ public class MainPanel extends javax.swing.JPanel {
 
     
     private void loadingData(){
+        String sqlCommand = "…";
+        try(Connection connection=getDatabaseConnect();
+            Statement sqlRequest = connection.createStatement();
+            ResultSet resultSet = sqlRequest.executeQuery(sqlCommand);
+            ) {
+            while(resultSet.next()){
+            
+            }
+            
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+       
     
-    
+        
+        
     }
     
     
@@ -150,4 +175,10 @@ public class MainPanel extends javax.swing.JPanel {
     private javax.swing.JList<String> tancLst;
     private javax.swing.JList<String> zeneLst;
     // End of variables declaration//GEN-END:variables
+
+    private Connection getDatabaseConnect() throws ClassNotFoundException, SQLException {
+        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+        String url = "jdbc:derby://localhost:1527/ew4vnt";
+        return  DriverManager.getConnection(url, "zh", "zh");
+    }
 }
