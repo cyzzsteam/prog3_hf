@@ -5,10 +5,7 @@
  */
 package forms;
 
-/**
- *
- * @author Kovács Beatrix
- */
+
 public class StartPanel extends javax.swing.JPanel {
 
     /**
@@ -27,19 +24,52 @@ public class StartPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        startButton = new javax.swing.JButton();
+
+        setMaximumSize(new java.awt.Dimension(600, 650));
+        setPreferredSize(new java.awt.Dimension(600, 650));
+
+        startButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/data/plakat.png"))); // NOI18N
+        startButton.setMaximumSize(new java.awt.Dimension(600, 650));
+        startButton.setMinimumSize(new java.awt.Dimension(600, 650));
+        startButton.setPreferredSize(new java.awt.Dimension(600, 650));
+        startButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(91, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
+       switchFrames();
+    }//GEN-LAST:event_startButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton startButton;
     // End of variables declaration//GEN-END:variables
+
+    private void switchFrames() {
+        StartFrame.getFrames()[0].setVisible(false);
+        new MainFrame().setVisible(true);    
+    }
+
+    
 }
