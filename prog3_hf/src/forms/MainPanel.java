@@ -10,10 +10,12 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.management.Query;
-
+import javax.swing.DefaultListModel;
+import classes.*;
 
 public class MainPanel extends javax.swing.JPanel {
 
@@ -131,26 +133,38 @@ public class MainPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 
+    private DefaultListModel<Balozo> balozoListModel;
+    private DefaultListModel<ZeneSzam> zeneListModel;
+    private DefaultListModel<Balozo> tancokListModel;
+    private DefaultListModel<ZeneSzam> kivalasztottZenekListModel;
+    
     
     private void loadingData(){
+        
         String sqlCommand = "…";
         try(Connection connection=getDatabaseConnect();
             Statement sqlRequest = connection.createStatement();
             ResultSet resultSet = sqlRequest.executeQuery(sqlCommand);
             ) {
+            int id,evfolyam;
+            String nev;
+            Balozo b;
             while(resultSet.next()){
-            
+                id=resultSet.getInt("id");
+                evfolyam=resultSet.getInt("evfolyam");
+                nev=resultSet.getString("nev");
+                if(evfolyam==1){
+                b=new Balozo(id, nev);
+                }else{
+                b=new Golya(id, nev);
+                }
+                balozoListModel.addElement(b);
             }
             
 
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-       
-    
-        
-        
     }
     
     
