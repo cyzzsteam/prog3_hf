@@ -23,5 +23,10 @@ public class ZeneSzam {
     public String getEloado() {
         return eloado;
     }
+
+    @Override
+    public String toString() {
+        return eloado +": "+nev;
+    }
     
 }

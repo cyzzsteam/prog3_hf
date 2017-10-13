@@ -20,13 +20,23 @@ private List<ZeneSzam> kivantSzamok;
     }
 
 
-private void kivalaszt(ZeneSzam z){
+public  void kivalaszt(ZeneSzam z){
     kivantSzamok.add(z);
 }
+
+    public List<ZeneSzam> getKivantSzamok() {
+        return kivantSzamok;
+    }
 
     @Override
     public void fogyaszt(int osszeg) {
         super.fogyaszt((int) (osszeg-(osszeg*KEDVEZMENY_SZAZALEK))); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String toString() {
+        if(super.getTancszam()==0) return super.getNev()+" (g)";
+        return super.getNev()+" ("+super.getTancszam()+" tánc , "+super.getZsebpenz()+" Ft) (g)";
     }
 
 

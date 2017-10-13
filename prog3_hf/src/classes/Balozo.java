@@ -20,12 +20,12 @@ public class Balozo {
         this.sorszam = sorszam;
         this.nev = nev;
     }
+
+    public void setZsebpenz(int zsebpenz) {
+        this.zsebpenz = zsebpenz;
+    }
     
-    public void penztKap(int osszeg){
-    if(osszeg>0){
-    zsebpenz+=osszeg;
-    }
-    }
+   
     
     public void fogyaszt(int osszeg){
     if(osszeg>0&&osszeg<zsebpenz){
@@ -51,4 +51,21 @@ public class Balozo {
     public int getTancszam() {
         return tancszam;
     }
+
+    public int getZsebpenz() {
+        /* Nem szép dolog más zsebébe turkálni, de kell az örökösnél hogy lekérjük */
+        return zsebpenz;
+    }
+
+    public int getEvfolyam() {
+        return evfolyam;
+    }
+
+    @Override
+    public String toString() {
+        if(tancszam==0) return nev;
+        return nev+" ("+tancszam+" tánc , "+zsebpenz+" Ft )";    }
+    
+    
+    
 }
