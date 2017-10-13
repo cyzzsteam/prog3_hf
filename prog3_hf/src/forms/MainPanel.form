@@ -134,6 +134,9 @@
               <StringArray count="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="balozokLstMouseClicked"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Balozo&gt;"/>
           </AuxValues>
@@ -173,7 +176,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;ZeneSzam&gt;"/>
           </AuxValues>
         </Component>
       </SubComponents>
@@ -192,25 +195,22 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Balozo&gt;"/>
           </AuxValues>
         </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JLabel" name="kivansagLbl">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="xy k&#xed;v&#xe1;ns&#xe1;ga"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Legt&#xf6;bbet t&#xe1;ncol&#xf3;k"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="mulatasBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Mulat&#xe1;s"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mulatasBtnActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

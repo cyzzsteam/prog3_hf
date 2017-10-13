@@ -18,6 +18,8 @@ import javax.swing.DefaultListModel;
 import classes.*;
 import interfaces.AdatInput;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
 
 public class MainPanel extends javax.swing.JPanel {
 
@@ -26,6 +28,10 @@ public class MainPanel extends javax.swing.JPanel {
      */
     public MainPanel() {
         initComponents();
+        zeneLst.setModel(zeneListModel);
+        balozokLst.setModel(balozoListModel);
+        kivansagLst.setModel(kivalasztottZenekListModel);
+        tancLst.setModel(tancokListModel);
     }
 
     /**
@@ -76,6 +82,11 @@ public class MainPanel extends javax.swing.JPanel {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Választható zeneszámok");
 
+        balozokLst.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                balozokLstMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(balozokLst);
 
         jScrollPane2.setViewportView(zeneLst);
@@ -84,11 +95,12 @@ public class MainPanel extends javax.swing.JPanel {
 
         jScrollPane4.setViewportView(tancLst);
 
-        kivansagLbl.setText("xy kívánsága");
-
-        jLabel5.setText("Legtöbbet táncolók");
-
         mulatasBtn.setText("Mulatás");
+        mulatasBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mulatasBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -147,6 +159,14 @@ public class MainPanel extends javax.swing.JPanel {
         loadingData();
     }//GEN-LAST:event_formAncestorAdded
 
+    private void mulatasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mulatasBtnActionPerformed
+        Mulatas();
+    }//GEN-LAST:event_mulatasBtnActionPerformed
+
+    private void balozokLstMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_balozokLstMouseClicked
+        zenetValaszt();
+    }//GEN-LAST:event_balozokLstMouseClicked
+
     private List<Balozo> balozok=new ArrayList<>();
     private List<ZeneSzam> zenek=new ArrayList<>();
     private DefaultListModel<Balozo> balozoListModel=new DefaultListModel<>();
@@ -155,7 +175,9 @@ public class MainPanel extends javax.swing.JPanel {
     private DefaultListModel<ZeneSzam> kivalasztottZenekListModel=new DefaultListModel<>();
     private final String BALOZOK_PATH="/data/balozok.txt";
     private final String ZENEK_PATH="/data/zenek.txt";
-    
+    private final int ZSEBPENZ_HATAR=10000;
+    private final int FOGYASZTAS_HATAR=1000;
+    int MULATASI_CIKLUS_MERETE=100;
     
     
     private void loadingData(){
@@ -182,11 +204,11 @@ public class MainPanel extends javax.swing.JPanel {
         }
         
         }
+       
         
-
-
         
         for (Balozo balozo : balozok) {
+                balozo.setZsebpenz((int) (Math.random()*ZSEBPENZ_HATAR));
                 balozoListModel.addElement(balozo);
             }
             
@@ -195,8 +217,7 @@ public class MainPanel extends javax.swing.JPanel {
             }
         
         
-        zeneLst.setModel(zeneListModel);
-        balozokLst.setModel(balozoListModel);
+
            
     }
     
@@ -217,9 +238,9 @@ public class MainPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel kivansagLbl;
-    private javax.swing.JList<String> kivansagLst;
+    private javax.swing.JList<ZeneSzam> kivansagLst;
     private javax.swing.JButton mulatasBtn;
-    private javax.swing.JList<String> tancLst;
+    private javax.swing.JList<Balozo> tancLst;
     private javax.swing.JList<ZeneSzam> zeneLst;
     // End of variables declaration//GEN-END:variables
 
@@ -228,4 +249,47 @@ public class MainPanel extends javax.swing.JPanel {
         String url = "jdbc:derby://localhost:1527/ew4vnt";
         return  DriverManager.getConnection(url, "zh", "zh");
     }
+
+    private void Mulatas() {
+        for (int i = 0; i < MULATASI_CIKLUS_MERETE; i++) {
+            balozoListModel.get((int) (Math.random()*balozoListModel.size())).tancol();
+            balozoListModel.get((int) (Math.random()*balozoListModel.size())).fogyaszt((int) (Math.random()*FOGYASZTAS_HATAR));
+        }
+        int max=0;
+        for(int i=0;i<balozoListModel.size();i++){
+        if(balozoListModel.get(i).getTancszam()>max){
+        max=balozoListModel.get(i).getTancszam();
+        }
+        }
+       tancokListModel.clear();
+        for(int i=0;i<balozoListModel.size();i++){
+        if(balozoListModel.get(i).getTancszam()==max){
+        tancokListModel.addElement(balozoListModel.get(i));
+        }
+        }
+        
+        
+       balozokLst.updateUI();
+    }
+
+    private void zenetValaszt() {
+    kivalasztottZenekListModel.clear();
+    Balozo b=balozokLst.getSelectedValue();
+    ZeneSzam z=zenek.get((int) (Math.random()*zenek.size()));
+    if(b instanceof Golya){
+    kivansagLbl.setText(b.getNev()+ " kívánsága: ");
+    ((Golya) b).kivalaszt(z);
+    }else{
+    kivansagLbl.setText(b.getNev()+ " nem gólya");
+    
+    }
+    List<ZeneSzam> tempList=((Golya) b).getKivantSzamok();
+        for (ZeneSzam zene : tempList) {
+            kivalasztottZenekListModel.addElement(zene);
+        }
+    
+    
+    kivansagLst.updateUI();
+    }
+
 }
