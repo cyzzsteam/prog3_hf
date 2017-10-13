@@ -14,8 +14,8 @@ public class Golya extends Balozo{
 private final double KEDVEZMENY_SZAZALEK=0.2;
 private List<ZeneSzam> kivantSzamok;
 
-    public Golya(int sorszam, String nev) {
-        super(sorszam, nev);
+    public Golya(int sorszam, String nev,int evfolyam) {
+        super(sorszam, nev,evfolyam);
         kivantSzamok=new ArrayList<>();
     }
 

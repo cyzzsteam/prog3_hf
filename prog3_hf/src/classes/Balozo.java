@@ -13,9 +13,10 @@ public class Balozo {
     private int zsebpenz;
     private int koltseg;
     private int tancszam;
+    //Evfolyamot csak vizsgálatra használjuk, hogy gólya e. Majdnem kihagytam emiatt az osztályból.
+    private int evfolyam;
 
-
-    public Balozo(int sorszam, String nev) {
+    public Balozo(int sorszam, String nev,int evfolyam) {
         this.sorszam = sorszam;
         this.nev = nev;
     }

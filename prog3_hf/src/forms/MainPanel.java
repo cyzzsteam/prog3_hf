@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 import javax.management.Query;
 import javax.swing.DefaultListModel;
 import classes.*;
+import interfaces.AdatInput;
+import java.util.ArrayList;
 
 public class MainPanel extends javax.swing.JPanel {
 
@@ -39,7 +41,7 @@ public class MainPanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        balozokLst = new javax.swing.JList();
+        balozokLst = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         zeneLst = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -145,45 +147,57 @@ public class MainPanel extends javax.swing.JPanel {
         loadingData();
     }//GEN-LAST:event_formAncestorAdded
 
-
+    private List<Balozo> balozok=new ArrayList<>();
+    private List<ZeneSzam> zenek=new ArrayList<>();
     private DefaultListModel<Balozo> balozoListModel=new DefaultListModel<>();
     private DefaultListModel<ZeneSzam> zeneListModel=new DefaultListModel<>();
     private DefaultListModel<Balozo> tancokListModel=new DefaultListModel<>();
     private DefaultListModel<ZeneSzam> kivalasztottZenekListModel=new DefaultListModel<>();
-    
+    private final String BALOZOK_PATH="/data/balozok.txt";
+    private final String ZENEK_PATH="/data/zenek.txt";
     
     
     
     private void loadingData(){
-        String sqlCommand = "select * from BALOZOK";
-        try(Connection connection=getDatabaseConnect();
-            Statement sqlRequest = connection.createStatement();
-            ResultSet resultSet = sqlRequest.executeQuery(sqlCommand);
-            ) {
-            int id,evfolyam;
-            String nev;
-            Balozo b=null;
-            while(resultSet.next()){
-                id=resultSet.getInt("id");
-                System.out.println(id);
-                evfolyam=resultSet.getInt("evfolyam");
-                System.out.println(evfolyam);
-                nev=resultSet.getString("nev");
-                System.out.println(nev);
-                if(evfolyam==1){
-                b=new Golya(id, nev);
-                }else{
-                b=new Balozo(id, nev);
-                }
-                balozoListModel.addElement(b);
-            }
-            
-            balozokLst.setModel(balozoListModel);
-            
-
-        } catch (ClassNotFoundException | SQLException ex) {
+        boolean database=false;
+        try{
+            Connection con=getDatabaseConnect();
+            AdatInput ai = new AdatbazisInput(con);
+            zenek=ai.zeneLista();
+            balozok=ai.balozoLista(); 
+            database=true;
+        }
+        catch (Exception ex) {
             Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        if(!database){
+        try{
+            AdatInput ai=new FajlbolInput(BALOZOK_PATH, ZENEK_PATH);
+            zenek=ai.zeneLista();
+            balozok=ai.balozoLista();
+        }
+         catch (Exception ex) {
+            Logger.getLogger(MainPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        }
+        
+
+
+        
+        for (Balozo balozo : balozok) {
+                balozoListModel.addElement(balozo);
+            }
+            
+            for (ZeneSzam zeneSzam : zenek) {
+                zeneListModel.addElement(zeneSzam);
+            }
+        
+        
+        zeneLst.setModel(zeneListModel);
+        balozokLst.setModel(balozoListModel);
+           
     }
     
     
@@ -193,7 +207,7 @@ public class MainPanel extends javax.swing.JPanel {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList balozokLst;
+    private javax.swing.JList<Balozo> balozokLst;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -206,7 +220,7 @@ public class MainPanel extends javax.swing.JPanel {
     private javax.swing.JList<String> kivansagLst;
     private javax.swing.JButton mulatasBtn;
     private javax.swing.JList<String> tancLst;
-    private javax.swing.JList<String> zeneLst;
+    private javax.swing.JList<ZeneSzam> zeneLst;
     // End of variables declaration//GEN-END:variables
 
     private Connection getDatabaseConnect() throws ClassNotFoundException, SQLException {
