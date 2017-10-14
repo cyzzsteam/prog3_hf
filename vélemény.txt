@@ -1,0 +1,15 @@
+
+A felület szép, esztétikus. A "Választható zeneszámok" listáját kicsit szélesebbre csináltam volna, elkerülve ezzel
+a felesleges scrollozást oldalra. Más egyéb ezzel kapcsolatban nincs.
+
+Az osztályokban szerintem minden rendben van, egy kis apró dolog azért említésre méltó: a Golya osztályban nem illik megadni
+a KEDVEZMENY_SZAZALEK értékét, hanem a panelen, a szimulációnál lett volna jó meghívni a kedvezmenySzazalek mezõ setterét.
+
+A program helyesen fut le, formai dolog, hogy a bálozók betöltésekor nem ABC sorrendben jelennek meg a nevek,
+vélhetõen Bálint elsiklott eme információ felett, a feladat olvasásakor :) 
+De talán kompenzálja ezt az apró figyelmetlenséget a feladat szorgalmi részének a megoldása.
+
+Tesztek nincsenek.
+
+Véleményezõ: Sütõ Erik
+
